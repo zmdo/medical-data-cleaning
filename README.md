@@ -10,7 +10,6 @@
 [
   {"question": "什么是肩周炎？","answer": "肩周炎是一种以肩关节疼痛和活动受限为主要特征的慢性炎症性疾病，多因肩部软组织损伤、退变或长期劳损引起。"},
   {"question": "怎么治疗肩周炎？","answer": "肩周炎的治疗需综合多种手段，包括药物治疗（如非甾体抗炎药缓解疼痛和炎症）、物理治疗（如热敷、冷敷、电疗等）、功能锻炼（如爬墙法、钟摆运动等）、中医治疗（如针灸、推拿、中药外敷）以及局部封闭或手术治疗（针对严重病例），具体方案应根据病情和医生建议选择。"},
-  ...
   {"question": "怎么诊断感冒？","answer": "感冒通常通过病史、症状（如发热、咳嗽、流涕、咽痛等）和体格检查进行初步诊断，必要时可结合实验室检查（如血常规、咽拭子检测）以排除其他疾病。"},
 ]
 ```
@@ -38,7 +37,7 @@ public class TestDataConverter extends MedicalDataConverter<TestObject> {
          * 实现如何将 originalData 转换为 StandardTrainData 
          */
 
-        // intelliChats 的列表顺序对应加载 @Converter 注解中加载 prompts 的顺序
+        // intelliChats 的列表顺序对应 @Converter 注解中加载 prompts 的顺序
         IntelliChat testO1PromptIntelliChat = intelliChats.get(0);
         
         ...
