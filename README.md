@@ -49,6 +49,33 @@ public class TestDataConverter extends MedicalDataConverter<TestObject> {
 4. 启动，直接运行 `Main` 类即可，其中你可以通过修改 `config.setThreads(int n)` 中的线程数来多线程请求文件。
 5. 最后的输出文件会在 `out` 目录下。为防止程序意外中断导致数据丢失，程序运行时会保存一份临时数据，临时数据保存在 `temp` 目录下。
 
+## 输出数据的结构
+
+输出的 json 文件中的单一数据结构如下表所示：
+
+| 字段 | 类型 | 描述      |
+| --- | --- |---------|
+| condition | Object | 患者的基本情况和检查结果 |
+| condition.gender | String | 性别      |
+| condition.age | Number | 年龄      |
+| condition.chiefComplaint | String | 主诉      |
+| condition.historyOfPresentIllness | String | 现病史     |
+| condition.pastHistory | String | 既往史     |
+| condition.personalHistory | String | 个人史     |
+| condition.allergicHistory | String | 过敏史     |
+| condition.reproductiveHistory | String | 生育史（ TPAL 数据 ） |
+| condition.pregnancyAndDelivery | String | 婚育史     |
+| condition.epidemicHistory | String | 流行病史    |
+| condition.physicalExamination | String | 体格检查结果  |
+| condition.auxiliaryExamination | String | 辅助检查结果  |
+| diseases | Array | 诊断的疾病列表 |
+| analyses | Array | 病例分析列表  |
+| analyses.description | String | 分析描述    |
+| analyses.score | Number | 分析评分（ 1 - 3 分 ） |
+| diagnoses | Array | 最终诊断结果  |
+| diagnoses.reason | String | 诊断依据    |
+| diagnoses.conclusion | String | 诊断结论    |
+
 ## 医疗数据来源
 
 | 数据  | 描述       | 下载地址                                       |
