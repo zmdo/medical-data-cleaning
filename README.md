@@ -24,8 +24,8 @@
                 "test/test-02.prompt",      
         },
         sources = {
-                "test/test-data-01.json", // 在 data 目录下对应的数据地址，指定地址的数据会转换为 TestObject 对象传入该类的 convert(TestObject,List<IntelliChat>) 方法中。
-                "test/test-data-02.json",
+                "test/test-data-01.json",      // 在 data 目录下对应的数据地址，指定地址的数据会转换为 TestObject 对象传入该类的 convert(TestObject,List<IntelliChat>) 方法中。
+                "line:test/test-data-02.json", // 路径前加上 line: 表示按行读取
         }
 )
 public class TestDataConverter extends MedicalDataConverter<TestObject> {
@@ -78,9 +78,10 @@ public class TestDataConverter extends MedicalDataConverter<TestObject> {
 
 ## 医疗数据来源
 
-| 数据  | 描述       | 下载地址                                       |
-|-----|----------|--------------------------------------------|
-| CMB | 中文综合医学基准 | https://github.com/FreedomIntelligence/CMB |
+| 数据  | 描述                                                       | 数据来源                                     |
+|-----|----------------------------------------------------------|------------------------------------------|
+| CMB | CMB（Comprehensive Medical Benchmark in Chinese）是由香港中文大学（深圳）的研究团队在2023年推出的一个全面的中文医学问答评测基准。                                                 | https://github.com/FreedomIntelligence/CMB |
+| MedQA | MedQA 是一种采用多项选择题格式的医学文本问答数据集，其问题选自美国、中国大陆及中国台湾医学委员会的考试。  | https://github.com/jind11/MedQA          |
 
 ## 关于 HealthAI 2025 健康智能挑战赛
 
