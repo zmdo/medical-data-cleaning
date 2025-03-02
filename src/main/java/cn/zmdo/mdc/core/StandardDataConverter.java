@@ -32,7 +32,10 @@ public interface StandardDataConverter<A,B> {
         List<B> result = new ArrayList<>();
         for (A item : list) {
             try {
-                result.add(convert(item,intelliChats));
+                B b = convert(item,intelliChats);
+                if (b != null) {
+                    result.add(b);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 continue;
