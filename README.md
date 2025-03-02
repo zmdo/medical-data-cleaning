@@ -4,7 +4,7 @@
 
 ## 快速开始
 
-1. 请将下载好的数据解压到 `data` 目录下，确保你的数据格式为 json 格式，且存储的内容为数据数组。如：
+1. 请将下载好的数据解压到 `data` 目录下，确保你的数据格式为 json 格式，且存储的内容为数据数组（.json 后缀）或按行存放的数据对象（.jsonl 后缀）。如：
 
 ```json
 [
@@ -13,6 +13,15 @@
   {"question": "怎么诊断感冒？","answer": "感冒通常通过病史、症状（如发热、咳嗽、流涕、咽痛等）和体格检查进行初步诊断，必要时可结合实验室检查（如血常规、咽拭子检测）以排除其他疾病。"}
 ]
 ```
+
+或
+
+```json lines
+{"question": "什么是肩周炎？","answer": "肩周炎是一种以肩关节疼痛和活动受限为主要特征的慢性炎症性疾病，多因肩部软组织损伤、退变或长期劳损引起。"}
+{"question": "怎么治疗肩周炎？","answer": "肩周炎的治疗需综合多种手段，包括药物治疗（如非甾体抗炎药缓解疼痛和炎症）、物理治疗（如热敷、冷敷、电疗等）、功能锻炼（如爬墙法、钟摆运动等）、中医治疗（如针灸、推拿、中药外敷）以及局部封闭或手术治疗（针对严重病例），具体方案应根据病情和医生建议选择。"}
+{"question": "怎么诊断感冒？","answer": "感冒通常通过病史、症状（如发热、咳嗽、流涕、咽痛等）和体格检查进行初步诊断，必要时可结合实验室检查（如血常规、咽拭子检测）以排除其他疾病。"}
+```
+
 2. 在 `prompt` 目录下创建提示词文件，你可以参考已经提交的提示词来写你自己的提示词。
 3. 在 `cn.zmdo.mdc.converter` 包下创建一个继承 `MedicalDataConverter<T>` 的类，并为其添加 `@Converter` 注解，如下所示：
 
@@ -25,7 +34,7 @@
         },
         sources = {
                 "test/test-data-01.json",      // 在 data 目录下对应的数据地址，指定地址的数据会转换为 TestObject 对象传入该类的 convert(TestObject,List<IntelliChat>) 方法中。
-                "line:test/test-data-02.json", // 路径前加上 line: 表示按行读取
+                "line:test/test-data-02.jsonl", // 路径前加上 line: 表示按行读取
         }
 )
 public class TestDataConverter extends MedicalDataConverter<TestObject> {
