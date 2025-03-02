@@ -56,11 +56,12 @@ public abstract class AbstractStandardDataConverter<A,B> implements StandardData
         for (A data : list) {
 
             tryCount = 0;
+            B b = null;
 
             // 会尝试进行数据转换，如果数据转换错误超过 maxTryCount 次，就跳过本次转换
             do {
                 try {
-                    B b = convert(data,intelliChats);
+                    b = convert(data,intelliChats);
                     if (b != null) {
                         convertedDataList.add(b);
                     }
@@ -73,7 +74,7 @@ public abstract class AbstractStandardDataConverter<A,B> implements StandardData
             } while (!success && tryCount < maxTryCount);
 
             // 每次转换后都会保存数据
-            if (success) {
+            if (b != null && success) {
 
                 try {
                     save(convertedDataList);

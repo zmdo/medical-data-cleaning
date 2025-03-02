@@ -1,5 +1,7 @@
 package cn.zmdo.mdc.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -8,6 +10,7 @@ import java.io.IOException;
 /**
  * 提示词读取器
  */
+@Slf4j
 public class PromptReader {
 
     /**
@@ -35,7 +38,9 @@ public class PromptReader {
                 content.append(line).append("\n"); // 追加每行内容
             }
         } catch (IOException e) {
-            System.err.println("读取文件时发生错误：" + e.getMessage());
+            log.error("读取{}时发生错误！",filePath);
+            log.error(e.getMessage());
+            return null;
         }
         return content.toString();
     }

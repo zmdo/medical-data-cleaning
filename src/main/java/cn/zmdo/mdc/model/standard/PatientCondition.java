@@ -13,7 +13,7 @@ public class PatientCondition {
     /**
      * 年龄
      */
-    private int age;
+    private Integer age;
 
     /**
      * 主诉
