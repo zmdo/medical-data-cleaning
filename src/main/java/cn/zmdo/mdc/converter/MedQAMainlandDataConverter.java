@@ -14,7 +14,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.List;
 
 @Converter(
-        dataId = "medqa-mainland-test",
+        dataId = "medqa-mainland",
         chatModel = "deepseek-chat", // 由于数据很多，所以这里不采用深度思考模式
         prompts = {
                 "MedQA/medqa-mainland-description.prompt",
