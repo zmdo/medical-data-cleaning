@@ -28,6 +28,13 @@ public @interface Converter {
     String[] prompts() default {};
 
     /**
+     * 使用指定的 LLM 模型处理对话，如果为空字符串，那么默认使用系统配置的模型，
+     * 否则使用当前指定的模型
+     * @return LLM 模型名
+     */
+    String chatModel() default "";
+
+    /**
      * 数据源
      *
      * @return 数据源列表

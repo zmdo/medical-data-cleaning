@@ -28,7 +28,30 @@ public class DeepSeekIntelliChat implements IntelliChat {
     }
 
     @Override
+    public String jsonCompletions(String content) {
+        return completions(content,true,false);
+    }
+
+    @Override
     public String completions(String content,boolean exportReasoningContent) {
+        return completions(content,false,exportReasoningContent);
+    }
+
+    @Override
+    public String getSystemPrompt() {
+        return systemPrompt;
+    }
+
+
+    /**
+     * AI 对话补全
+     *
+     * @param content                 输入内容
+     * @param outputJson              是否输出为 json 格式
+     * @param exportReasoningContent  是否输出深度思考内容
+     * @return 补全的内容
+     */
+    public String completions(String content,boolean outputJson,boolean exportReasoningContent) {
 
         // 构建聊天列表
         List<ChatMessage> chatMessageList = new ArrayList<>();
@@ -43,6 +66,9 @@ public class DeepSeekIntelliChat implements IntelliChat {
         ChatCompletionRequest request = new ChatCompletionRequest();
         request.setModel(model);
         request.setMessages(chatMessageList);
+        if (outputJson) {
+            request.setResponseFormat(ChatCompletionRequest.ResponseFormat.JSON_RESPONSE_FORMAT);
+        }
 
         try {
             // 请求
@@ -50,24 +76,20 @@ public class DeepSeekIntelliChat implements IntelliChat {
 
             // 获取 AI 回应的消息
             ChatMessage responseMessage = response.getChoices().get(0).getMessage();
+
             String aiContent = responseMessage.getContent();
-            String aiReasoningContent = responseMessage.getReasoningContent();;
 
             // 组装消息
-            if (exportReasoningContent) {
+            if (!outputJson && exportReasoningContent) {
+                String aiReasoningContent = responseMessage.getReasoningContent();
                 return String.format("<think>\n%s\n</think>\n%s",aiReasoningContent,aiContent);
             }
             return aiContent;
+
         } catch (Exception e) {
             log.error("Error in DeepSeekIntelliChat",e);
             return null;
         }
 
     }
-
-    @Override
-    public String getSystemPrompt() {
-        return systemPrompt;
-    }
-
 }

@@ -141,19 +141,42 @@ public class DataCleaningWorkFlow {
             return data;
         }
 
-        // 读取并注入 prompt 到 AI 会话器中
+        // 创建 AI 会话器中
         List<IntelliChat> intelliChats = new ArrayList<>();
         if (converterAnno.prompts() != null) {
-            for (String prompt : converterAnno.prompts()) {
+
+            // 获取当前使用的模型
+            String chatModel;
+            if (converterAnno.chatModel() != null) {
+                chatModel = converterAnno.chatModel();
+            } else {
+                chatModel = config.getAiChatModel();
+            }
+
+            // 载入提示词
+            for (String promptPath : converterAnno.prompts()) {
+
+                String realPromptPath;
+
+                // 检查 prompt 有没有指定模型
+                if (promptPath.contains(":")) {
+                    int modelNameEndIndex = promptPath.indexOf(":");
+                    chatModel = promptPath.substring(0,modelNameEndIndex);
+                    realPromptPath = promptPath.substring(modelNameEndIndex + 1);
+                } else {
+                    realPromptPath = promptPath;
+                }
+
                 DeepSeekIntelliChat intelliChat = new DeepSeekIntelliChat(
                         config.getAiChatUrl(),
                         config.getAiChatKey(),
-                        config.getAiChatModel()
+                        chatModel
                 );
-                String promptContent = PromptReader.readPrompt(prompt);
+                String promptContent = PromptReader.readPrompt(realPromptPath);
                 intelliChat.setSystemPrompt(promptContent);
                 intelliChats.add(intelliChat);
             }
+
         }
 
         // 创建一个对象

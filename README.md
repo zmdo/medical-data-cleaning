@@ -27,14 +27,15 @@
 
 ```java
 @Converter(
-        dataId = "test-data", // 该数据的唯一标识符，最终会在 out 目录下保存该文件的 {dataId}.json 数据
+        dataId = "test-data", // 该数据的唯一标识符，最终会在 out 目录下保存该文件的 {dataId}.json 数据。
+        chatModel = "deepseek-reasoner", // 可以在此指定提示词使用的模型，如果不指定那么默认使用配置中设置的模型。
         prompts = {
-                "test/test-01.prompt",    // 在 prompt 目录下对应的系统提示词，该提示词会自动加载入 AI 对话器 IntelliChat 对象中。
-                "test/test-02.prompt",      
+                "test/test-01.prompt",                // 在 prompt 目录下对应的系统提示词文件路径，该提示词会自动加载入 AI 对话器 IntelliChat 对象中。
+                "deepseek-chat:test/test-02.prompt",  // 可以在 prompt 文件路径前加入 [模型名:] 来指定使用的模型。
         },
         sources = {
-                "test/test-data-01.json",      // 在 data 目录下对应的数据地址，指定地址的数据会转换为 TestObject 对象传入该类的 convert(TestObject,List<IntelliChat>) 方法中。
-                "line:test/test-data-02.jsonl", // 路径前加上 line: 表示按行读取
+                "test/test-data-01.json",       // 在 data 目录下对应的数据地址，指定地址的数据会转换为 TestObject 对象传入该类的 convert(TestObject,List<IntelliChat>) 方法中。
+                "line:test/test-data-02.jsonl", // 路径前加上 [line:] 表示按行读取，如果文件为 .jsonl 格式，那么可以不用加 [line:] 标注。
         }
 )
 public class TestDataConverter extends MedicalDataConverter<TestObject> {

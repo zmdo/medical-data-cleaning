@@ -30,9 +30,17 @@ public class DataReader {
     public static <T> List<T> readList(String dataPath,Class<T> clazz) {
 
         List<T> data;
-        if (dataPath.startsWith("line:")) {
+        if (dataPath.startsWith("line:") || dataPath.toLowerCase().endsWith(".jsonl")) {
+
+            String realDataPath;
+            if (dataPath.startsWith("line:")) {
+                realDataPath = dataPath.substring(5);
+            } else {
+                realDataPath = dataPath;
+            }
+
             // 如果是按行读取
-            String path = System.getProperty("user.dir") + "/data/" + dataPath.substring(5);
+            String path = System.getProperty("user.dir") + "/data/" + realDataPath;
 
             data = new ArrayList<>();
             try (BufferedReader reader = new BufferedReader(new FileReader(new File(path)))) {

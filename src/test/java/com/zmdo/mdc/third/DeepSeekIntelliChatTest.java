@@ -15,7 +15,8 @@ public class DeepSeekIntelliChatTest {
     private DeepSeekIntelliChat deepSeekIntelliChat = new DeepSeekIntelliChat(
             "https://api.deepseek.com/chat/completions",
             "sk-9992f172aa934aaab9b4d11aa6363337",
-            "deepseek-reasoner"
+            // "deepseek-reasoner"
+            "deepseek-chat"
     );
 
     @Test
@@ -74,9 +75,8 @@ public class DeepSeekIntelliChatTest {
                 "肾母细胞瘤"
                 );
 
-        String res = deepSeekIntelliChat.completions(
-                inputData,
-                true
+        String res = deepSeekIntelliChat.jsonCompletions(
+                inputData
         );
         System.out.println(res);
     }

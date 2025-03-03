@@ -4,6 +4,7 @@ import cn.zmdo.mdc.third.model.component.ChatMessage;
 import cn.zmdo.mdc.third.model.component.Tool;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
@@ -29,6 +30,27 @@ public class ChatCompletionRequest {
      * 使用<a href="https://platform.openai.com/docs/guides/chat/introduction">聊天格式</a>
      */
     private List<ChatMessage> messages;
+
+    /**
+     * <b>[可选]</b> 返回格式
+     * <p>
+     * <b>[默认值]</b> text
+     * </p>
+     */
+    @JsonProperty("response_format")
+    private ResponseFormat responseFormat;
+
+    @Data
+    @AllArgsConstructor
+    public static class ResponseFormat {
+
+        public static final ResponseFormat TEXT_RESPONSE_FORMAT = new ResponseFormat("text");
+        public static final ResponseFormat JSON_RESPONSE_FORMAT = new ResponseFormat("json_object");
+
+        private String type;
+
+    }
+
 
     /**
      * <b>[可选]</b> temperature 采样

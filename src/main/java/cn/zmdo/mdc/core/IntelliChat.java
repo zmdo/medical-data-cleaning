@@ -13,9 +13,16 @@ public interface IntelliChat {
     String getSystemPrompt();
 
     /**
+     * json 补全，注意此情况下不能使用思考模式
+     *
+     * @param content 输入的内容
+     * @return json 数据
+     */
+    String jsonCompletions(String content);
+
+    /**
      * AI 对话补全
      *
-     * @param id                     prompt 编号
      * @param content                输入的内容
      * @param exportReasoningContent 是否输出深度思考内容，深度思考内容会用 {@code <think></think>} 标签包裹
      * @return AI 会话补全结果

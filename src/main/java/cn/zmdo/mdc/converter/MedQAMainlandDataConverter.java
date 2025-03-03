@@ -8,21 +8,23 @@ import cn.zmdo.mdc.model.standard.Diagnosis;
 import cn.zmdo.mdc.model.standard.DiseaseAnalysis;
 import cn.zmdo.mdc.model.standard.PatientCondition;
 import cn.zmdo.mdc.model.standard.StandardTrainData;
+import cn.zmdo.mdc.util.JsonExtractHelper;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.List;
 
 @Converter(
-        dataId = "medqa-mainland",
+        dataId = "medqa-mainland-test",
+        chatModel = "deepseek-chat", // 由于数据很多，所以这里不采用深度思考模式
         prompts = {
                 "MedQA/medqa-mainland-description.prompt",
                 "MedQA/medqa-mainland-analysis.prompt",
                 "MedQA/medqa-mainland-diagnosis.prompt"
         },
         sources = {
-                "line:MedQA/questions/Mainland/dev.jsonl",
-                "line:MedQA/questions/Mainland/test.jsonl",
-                "line:MedQA/questions/Mainland/train.jsonl"
+                // "MedQA/questions/Mainland/dev.jsonl",
+                "MedQA/questions/Mainland/test.jsonl",
+                // "MedQA/questions/Mainland/train.jsonl"
         }
 )
 public class MedQAMainlandDataConverter extends MedicalDataConverter<MedQAJson> {
@@ -53,7 +55,7 @@ public class MedQAMainlandDataConverter extends MedicalDataConverter<MedQAJson> 
         //    转换病历信息
         // +-----------------+
 
-        String patientConditionJson = intelliChats.get(0).completions(
+        String patientConditionJson = intelliChats.get(0).jsonCompletions(
                 question.replace("最可能的诊断是（　　）。","病历介绍完毕。")
         );
         PatientCondition patientCondition =
@@ -73,9 +75,10 @@ public class MedQAMainlandDataConverter extends MedicalDataConverter<MedQAJson> 
         );
 
         // 通过 AI 分析具体诊断步骤和评分
-        String analysesText = intelliChats.get(1).completions(reportPrompt);
-        List<DiseaseAnalysis> analyses = objectMapper.readValue(
-                analysesText, new TypeReference<>() {}
+        String analysesJson = intelliChats.get(1).jsonCompletions(reportPrompt);
+        List<DiseaseAnalysis> analyses = objectMapper.convertValue(
+                JsonExtractHelper.extract(analysesJson,"analysis_steps"),
+                new TypeReference<>() {}
         );
         standardTrainData.setAnalyses(analyses);
 
@@ -83,9 +86,10 @@ public class MedQAMainlandDataConverter extends MedicalDataConverter<MedQAJson> 
         //    转换诊断结果
         // +-----------------+
 
-        String diagnosesText = intelliChats.get(2).completions(reportPrompt);
-        List<Diagnosis> diagnoses = objectMapper.readValue(
-                diagnosesText, new TypeReference<>() {}
+        String diagnosesJson = intelliChats.get(2).jsonCompletions(reportPrompt);
+        List<Diagnosis> diagnoses = objectMapper.convertValue(
+                JsonExtractHelper.extract(diagnosesJson,"diagnoses"),
+                new TypeReference<>() {}
         );
         standardTrainData.setDiagnoses(diagnoses);
 

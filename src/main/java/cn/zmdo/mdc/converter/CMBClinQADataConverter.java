@@ -16,13 +16,15 @@ import java.util.List;
 
 @Converter(
         dataId = "std-cmb-clin-qa",
+        chatModel = "deepseek-reasoner", // 由于数据量少，并且该数据具有参考性，所以采用深度思考模式
         prompts = {
                 "CMB/cmb-clin-qa-description.prompt",
                 "CMB/cmb-clin-qa-disease.prompt",
                 "CMB/cmb-clin-qa-analysis.prompt",
                 "CMB/cmb-clin-qa-diagnosis.prompt",
         },
-        sources = "CMB/CMB-Clin/CMB-Clin-qa.json"
+        sources = "CMB/CMB-Clin/CMB-Clin-qa.json",
+        enable = false
 )
 public class CMBClinQADataConverter extends MedicalDataConverter<CMBClinQAJson> {
 
@@ -82,9 +84,9 @@ public class CMBClinQADataConverter extends MedicalDataConverter<CMBClinQAJson> 
         );
 
         // 通过 AI 分析具体诊断步骤和评分
-        String analysesText = intelliChats.get(2).completions(reportPrompt);
+        String analysesJson = intelliChats.get(2).completions(reportPrompt);
         List<DiseaseAnalysis> analyses = objectMapper.readValue(
-                analysesText, new TypeReference<>() {}
+                analysesJson, new TypeReference<>() {}
         );
         standardTrainData.setAnalyses(analyses);
 
@@ -92,9 +94,9 @@ public class CMBClinQADataConverter extends MedicalDataConverter<CMBClinQAJson> 
         //   转换诊断结果
         // +---------------+
 
-        String diagnosesText = intelliChats.get(3).completions(originalJson);
+        String diagnosesJson = intelliChats.get(3).completions(originalJson);
         List<Diagnosis> diagnoses = objectMapper.readValue(
-                diagnosesText, new TypeReference<>() {}
+                diagnosesJson, new TypeReference<>() {}
         );
         standardTrainData.setDiagnoses(diagnoses);
 
