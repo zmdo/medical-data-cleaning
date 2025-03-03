@@ -22,9 +22,9 @@ import java.util.List;
                 "MedQA/medqa-mainland-diagnosis.prompt"
         },
         sources = {
-                // "MedQA/questions/Mainland/dev.jsonl",
+                "MedQA/questions/Mainland/dev.jsonl",
                 "MedQA/questions/Mainland/test.jsonl",
-                // "MedQA/questions/Mainland/train.jsonl"
+                "MedQA/questions/Mainland/train.jsonl"
         }
 )
 public class MedQAMainlandDataConverter extends MedicalDataConverter<MedQAJson> {

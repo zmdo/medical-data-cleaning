@@ -23,8 +23,7 @@ import java.util.List;
                 "CMB/cmb-clin-qa-analysis.prompt",
                 "CMB/cmb-clin-qa-diagnosis.prompt",
         },
-        sources = "CMB/CMB-Clin/CMB-Clin-qa.json",
-        enable = false
+        sources = "CMB/CMB-Clin/CMB-Clin-qa.json"
 )
 public class CMBClinQADataConverter extends MedicalDataConverter<CMBClinQAJson> {
 
