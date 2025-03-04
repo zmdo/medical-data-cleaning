@@ -22,14 +22,7 @@ public abstract class AbstractStandardDataConverter<A,B> implements StandardData
     @Getter
     protected int maxTryCount = 3;
 
-    /**
-     * 临时数据存储地址
-     */
-    @Setter
-    @Getter
-    protected String tempSavePath;
-
-    protected List<B> convertedDataList = new ArrayList<>();
+    private String dataId;
 
     protected final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -41,17 +34,22 @@ public abstract class AbstractStandardDataConverter<A,B> implements StandardData
             throw new IllegalArgumentException("Internal error: MedicalDataConverter constructed without actual type information");
         }
 
-        // 获取当前时间
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyMMddHHmm");
-
-        // 构建临时文件存储地址
-        String filename = String.format("%s-%s.json",converter.dataId(),simpleDateFormat.format(new Date()));
-        tempSavePath = System.getProperty("user.dir") + "/temp/" + filename;
+        dataId = converter.dataId();
 
     }
 
     @Override
     public List<B> convert(List<A> list, List<IntelliChat> intelliChats) {
+
+        // 获取当前时间
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyMMddHHmm");
+
+        // 构建临时文件存储地址
+        String filename = String.format("%s-%s.json",dataId,simpleDateFormat.format(new Date()));
+        String tempSavePath = System.getProperty("user.dir") + "/temp/" + filename;
+
+        List<B> convertedDataList = new ArrayList<>();
+
         int tryCount;
         boolean success;
         for (A data : list) {
@@ -78,7 +76,7 @@ public abstract class AbstractStandardDataConverter<A,B> implements StandardData
             if (b != null && success) {
 
                 try {
-                    save(convertedDataList);
+                    save(tempSavePath,convertedDataList);
                 } catch (IOException e) {
                     e.printStackTrace();
                     log.error("保存失败：{}",e.getMessage());
@@ -94,7 +92,7 @@ public abstract class AbstractStandardDataConverter<A,B> implements StandardData
      *
      * @param data 待保存的数据
      */
-    protected void save(List<B> data) throws IOException {
+    protected void save(String tempSavePath,List<B> data) throws IOException {
         objectMapper.writeValue(new File(tempSavePath),data);
     }
 }
