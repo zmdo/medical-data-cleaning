@@ -29,6 +29,8 @@ public abstract class AbstractStandardDataConverter<A,B> implements StandardData
     @Getter
     protected String tempSavePath;
 
+    protected List<B> convertedDataList = new ArrayList<>();
+
     protected final ObjectMapper objectMapper = new ObjectMapper();
 
     public AbstractStandardDataConverter() {
@@ -50,7 +52,6 @@ public abstract class AbstractStandardDataConverter<A,B> implements StandardData
 
     @Override
     public List<B> convert(List<A> list, List<IntelliChat> intelliChats) {
-        List<B> convertedDataList = new ArrayList<>();
         int tryCount;
         boolean success;
         for (A data : list) {
