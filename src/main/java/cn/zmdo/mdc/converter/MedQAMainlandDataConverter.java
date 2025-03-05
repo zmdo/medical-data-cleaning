@@ -11,6 +11,7 @@ import cn.zmdo.mdc.model.standard.StandardTrainData;
 import cn.zmdo.mdc.util.JsonExtractHelper;
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Converter(
@@ -49,7 +50,8 @@ public class MedQAMainlandDataConverter extends MedicalDataConverter<MedQAJson> 
 
         // 直接设置疾病名
         String disease = originalData.getAnswer();
-        standardTrainData.setDiseases(List.of(disease));
+        String[] diseases = disease.split("[,，]");
+        standardTrainData.setDiseases(Arrays.asList(diseases));
 
         // +-----------------+
         //    转换病历信息
