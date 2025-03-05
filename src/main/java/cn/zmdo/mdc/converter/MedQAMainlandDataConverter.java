@@ -73,7 +73,7 @@ public class MedQAMainlandDataConverter extends MedicalDataConverter<MedQAJson> 
         String reportPrompt = String.format(
                 "<report>\n%s\n</report>\n<disease>\n%s\n</disease>",
                 patientCondition.report(),
-                disease
+                disease.replaceAll("，",",")
         );
 
         // 通过 AI 分析具体诊断步骤和评分
